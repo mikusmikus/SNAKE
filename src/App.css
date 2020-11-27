@@ -89,35 +89,35 @@
     width: 100%;
     height: 100%;
     
-    opacity: 60%;
+    opacity: 0%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     font-size: 60px;
-    color: rgb(182, 87, 4);
+    color:rgb(182, 182, 182);  
     animation: levelUp 4s linear;
 }
 
 @keyframes levelUp {
     0% {
-        color: rgb(148, 148, 148);  
-        opacity: 60%;
+        color: rgb(168, 168, 168);  
+        opacity: 5%;
     }
     25% {
-        color: rgb(247, 251, 7);
-        opacity: 80%;
+        color: rgb(73, 73, 73);
+        opacity: 40%;
     }
     50% {
-        color: rgb(0, 255, 0);
-        opacity: 80%;
+        color: black;
+        opacity: 40%;
     }
-    75% {
-        color: yellow;
-        opacity: 60%;
+    80% {
+        color: rgb(55, 63, 66);
+        opacity: 30%;
     }
     100% {
         color: rgb(148, 148, 148);
-        opacity: 20%;
+        opacity: 0%;
     }
 }
