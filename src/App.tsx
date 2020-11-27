@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import * as _ from 'lodash';
 import './App.css';
 import 'flexboxgrid';
-import {drawGrid, Grid, CellColor, Cell} from './drawGrid';
+import {drawGrid, Grid, CellColor, Cell, Direction} from './drawGrid';
 
 const GRID_SIZE = 22;
 let grid: Grid[][];
@@ -10,11 +10,12 @@ let grid: Grid[][];
 const fillOneCell = (cell: Cell, color: CellColor) => {
   grid[cell.y][cell.x].cell = color;
 };
-
+const possibleKeypress: Direction[] = ['ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown'];
 let head: Cell;
 let food: Cell;
 let keyPress = '';
 const tail: Cell[] = [];
+let score = 0;
 
 // fillOneCell(head, 'snake');
 // tail.forEach((t) => fillOneCell(t, 'tail'));
@@ -27,7 +28,11 @@ const App = () => {
   //   {x: 0, y: 0},
   //   {x: 1, y: 0},
   // ]);
+  // ]);
+  // const [score, setScore] = useState(0);
+  const [moveTime, setMoveTime] = useState(200);
   const [refreshGrid, setRefreshGrid] = useState(true);
+  const [animation, setAnimation] = useState(false);
   const [gameOptions, setGameOptions] = useState({start: false, gameOver: false});
   // const [keyPress, setKeyPress] = useState('');
   // const [direction, setDirection] = useState<Direction>('ArrowRight');
@@ -47,9 +52,29 @@ const App = () => {
     setRefreshGrid(!refreshGrid);
   };
 
+  const keyPressHandler = (pressedKey: string) => {
+    possibleKeypress.forEach((direction) => {
+      if (pressedKey === direction) {
+        if (pressedKey === 'ArrowLeft' && keyPress === 'ArrowRight') {
+          return;
+        }
+        if (pressedKey === 'ArrowRight' && keyPress === 'ArrowLeft') {
+          return;
+        }
+        if (pressedKey === 'ArrowDown' && keyPress === 'ArrowUp') {
+          return;
+        }
+        if (pressedKey === 'ArrowUp' && keyPress === 'ArrowDown') {
+          return;
+        }
+        keyPress = pressedKey;
+      }
+    });
+  };
+
   useEffect(() => {
     document.body.addEventListener('keydown', (e) => {
-      keyPress = e.key;
+      keyPressHandler(e.key);
     });
   }, []);
 
@@ -58,14 +83,12 @@ const App = () => {
       return;
     }
     positionCheck();
-    addNewFruit();
+
     moveTail();
     moveHead(keyPress);
-
     const interval = setInterval(() => {
       setRefreshGrid(!refreshGrid);
-    }, 150);
-    addNewFruit();
+    }, moveTime);
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval);
   }, [refreshGrid]);
@@ -95,7 +118,6 @@ const App = () => {
         } else {
           head = {x: head.x, y: head.y + 1};
         }
-
         fillOneCell({x: head.x, y: head.y}, 'snake');
         break;
 
@@ -106,7 +128,6 @@ const App = () => {
           head = {x: head.x - 1, y: head.y};
         }
         fillOneCell({x: head.x, y: head.y}, 'snake');
-
         break;
       case 'ArrowUp':
         if (head.y === 0) {
@@ -114,9 +135,7 @@ const App = () => {
         } else {
           head = {x: head.x, y: head.y - 1};
         }
-
         fillOneCell({x: head.x, y: head.y}, 'snake');
-
         break;
     }
   };
@@ -124,26 +143,48 @@ const App = () => {
   const moveTail = () => {
     tail.push({x: head.x, y: head.y});
     fillOneCell(tail[0], 'empty');
-    if (head.x === food.x && head.y === food.y) {
-      food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
-      fillOneCell(food, 'food');
-    } else {
-      tail.shift();
-    }
+    addNewFruit();
     tail.forEach((t) => fillOneCell(t, 'tail'));
   };
 
   const addNewFruit = () => {
-    if (!food) {
+    if (head.x === food.x && head.y === food.y) {
+      if (score % 5 === 0) {
+        setMoveTime(moveTime - 10);
+      }
+      score += 1;
       food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
       fillOneCell(food, 'food');
+      showAnimation();
+    } else {
+      tail.shift();
     }
+    tail.forEach((t) => {
+      if (t.x === food.x && t.y === food.y) {
+        food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
+        fillOneCell(food, 'food');
+      }
+    });
+  };
+
+  const showAnimation = () => {
+    if (score === 0) {
+      return;
+    }
+    if (score % 5) {
+      return;
+    }
+    setAnimation(true);
+    setTimeout(() => {
+      setAnimation(false);
+    }, 4000);
   };
 
   return (
     <div>
-      <div className="container">
-        <h1 className="heading"> snake snake snake snake snake snake </h1>
+      <div className="container center-xs">
+        <h1 className="heading"> snake snake snake snake snake snake</h1>
+        <span className="score"> {score} points</span>
         <div className="row center-xs game-wrapper">
           <div className="col-xs-12">
             <div className="game">
@@ -156,7 +197,8 @@ const App = () => {
                   }}
                 >
                   {' '}
-                  game over!
+                  <span className="score"> Congratz, you got {score} points! </span>
+                  Play Again!
                 </button>
               )}
               {!gameOptions.start ? (
@@ -166,6 +208,12 @@ const App = () => {
                 </button>
               ) : (
                 <>
+                  {animation && (
+                    <div className="animation">
+                      <h1>LEVEL UP</h1>
+                      <h1>SPEED +10</h1>
+                    </div>
+                  )}
                   {grid &&
                     grid.map((element) =>
                       element.map((el) => (
