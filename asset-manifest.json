@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/SNAKE/static/css/main.99f85180.chunk.css",
-    "main.js": "/SNAKE/static/js/main.80ba1089.chunk.js",
-    "main.js.map": "/SNAKE/static/js/main.80ba1089.chunk.js.map",
+    "main.css": "/SNAKE/static/css/main.544cb27b.chunk.css",
+    "main.js": "/SNAKE/static/js/main.3c241ddb.chunk.js",
+    "main.js.map": "/SNAKE/static/js/main.3c241ddb.chunk.js.map",
     "runtime-main.js": "/SNAKE/static/js/runtime-main.d3883c4e.js",
     "runtime-main.js.map": "/SNAKE/static/js/runtime-main.d3883c4e.js.map",
     "static/css/2.e985627f.chunk.css": "/SNAKE/static/css/2.e985627f.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.30a46f81.chunk.js.map": "/SNAKE/static/js/3.30a46f81.chunk.js.map",
     "index.html": "/SNAKE/index.html",
     "static/css/2.e985627f.chunk.css.map": "/SNAKE/static/css/2.e985627f.chunk.css.map",
-    "static/css/main.99f85180.chunk.css.map": "/SNAKE/static/css/main.99f85180.chunk.css.map",
+    "static/css/main.544cb27b.chunk.css.map": "/SNAKE/static/css/main.544cb27b.chunk.css.map",
     "static/js/2.9a0647ec.chunk.js.LICENSE.txt": "/SNAKE/static/js/2.9a0647ec.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d3883c4e.js",
     "static/css/2.e985627f.chunk.css",
     "static/js/2.9a0647ec.chunk.js",
-    "static/css/main.99f85180.chunk.css",
-    "static/js/main.80ba1089.chunk.js"
+    "static/css/main.544cb27b.chunk.css",
+    "static/js/main.3c241ddb.chunk.js"
   ]
 }
