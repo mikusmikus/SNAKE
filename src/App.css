@@ -83,6 +83,7 @@
 }
 
 .animation {
+    
     position: absolute;
     left: 0;
     top: 0;
@@ -97,6 +98,7 @@
     font-size: 60px;
     color:rgb(182, 182, 182);  
     animation: levelUp 4s linear;
+    z-index: 999;
 }
 
 @keyframes levelUp {
