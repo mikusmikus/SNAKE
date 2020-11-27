@@ -70,6 +70,21 @@ const App = () => {
   //   // eslint-disable-next-line prefer-destructuring
   //   keyPress = directions[0];
   // };
+  const startGame = () => {
+    setGameOptions({...gameOptions, start: true});
+    grid = drawGrid(GRID_SIZE);
+    keyPress = 'ArrowRight';
+    head = {x: 2, y: 0};
+    tail.splice(0, tail.length);
+    tail.push({x: 0, y: 0});
+    tail.push({x: 1, y: 0});
+    food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
+    fillOneCell(head, 'snake');
+    tail.forEach((t) => fillOneCell(t, 'tail'));
+    fillOneCell(food, 'food');
+    setRefreshGrid(!refreshGrid);
+  };
+
   const keyPressHandler = (pressedKey: string) => {
     possibleKeypress.forEach((allowedDirection) => {
       if (pressedKey === allowedDirection) {
@@ -99,20 +114,6 @@ const App = () => {
     });
   };
 
-  const startGame = () => {
-    setGameOptions({...gameOptions, start: true});
-    grid = drawGrid(GRID_SIZE);
-    keyPress = 'ArrowRight';
-    head = {x: 2, y: 0};
-    tail.splice(0, tail.length);
-    tail.push({x: 0, y: 0});
-    tail.push({x: 1, y: 0});
-    food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
-    fillOneCell(head, 'snake');
-    tail.forEach((t) => fillOneCell(t, 'tail'));
-    fillOneCell(food, 'food');
-    setRefreshGrid(!refreshGrid);
-  };
 
   const moveHead = (dir: string) => {
     switch (dir) {
@@ -186,7 +187,9 @@ const App = () => {
       return;
     }
     setAnimation(true);
+    console.log('animation  On'); 
     setTimeout(() => {
+      console.log('timeout');
       setAnimation(false);
     }, 4000);
   };
