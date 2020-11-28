@@ -18,11 +18,11 @@ let food: Cell;
 const tail: Cell[] = [];
 const directions: Direction[] = ['ArrowRight'];
 let score = 0;
+let moveTime = 250;
 
 const App = () => {
-  const [headerScore, setHeaderScore] = useState(0);
   const [gridSize, setGridSize] = useState(22);
-  const [moveTime, setMoveTime] = useState(250);
+  // const [moveTime, setMoveTime] = useState(250);
 
   const [refreshGrid, setRefreshGrid] = useState(true);
   const [gameOptions, setGameOptions] = useState({
@@ -75,7 +75,6 @@ const App = () => {
 
   const findNextKeypress = () => {
     if (directions.length > 1) {
-      // eslint-disable-next-line prefer-destructuring
       directions.splice(0, 1);
     }
   };
@@ -150,10 +149,8 @@ const App = () => {
 
   const moveTail = () => {
     tail.push({x: head.x, y: head.y});
-    // fillOneCell(tail[0], 'empty');
     fillOneCellOnGrid(tail[0], 'empty', grid);
     addNewFruit();
-    // tail.forEach((t) => fillOneCell(t, 'tail'));
     tail.forEach((t) => fillOneCellOnGrid(t, 'tail', grid));
   };
 
@@ -161,38 +158,35 @@ const App = () => {
     if (head.x === food.x && head.y === food.y) {
       if (score % 10 === 0) {
         if (moveTime > 50) {
-          setMoveTime(moveTime - 5);
+          moveTime -= 5;
         }
       }
       score += 1;
-      setHeaderScore(headerScore + 1);
       food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
-      // fillOneCell(food, 'food');
       fillOneCellOnGrid(food, 'food', grid);
-      // showAnimation();
+      showAnimation();
     } else {
       tail.shift();
     }
     tail.forEach((t) => {
       if (t.x === food.x && t.y === food.y) {
         food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
-        // fillOneCell(food, 'food');
         fillOneCellOnGrid(food, 'food', grid);
       }
     });
   };
 
-  // const showAnimation = () => {
-  //   if (score === 0 || score % 10) {
-  //     return;
-  //   }
-  //   setGameOptions({...gameOptions, levelUpAnimation: true});
-  //   // console.log('animation  On');
-  //   setTimeout(() => {
-  //     // console.log('timeout');
-  //     setGameOptions({...gameOptions, levelUpAnimation: false});
-  //   }, 4000);
-  // };
+  const showAnimation = () => {
+    if (score === 0 || score % 10) {
+      return;
+    }
+    setGameOptions({...gameOptions, levelUpAnimation: true});
+    // console.log('animation  On');
+    setTimeout(() => {
+      // console.log('timeout');
+      setGameOptions({...gameOptions, levelUpAnimation: false});
+    }, 4000);
+  };
 
   const handleOptions = (
     event: React.FormEvent<HTMLFormElement>,
@@ -201,14 +195,13 @@ const App = () => {
   ) => {
     event.preventDefault();
     setGridSize(selectedGrid);
-    setMoveTime(selectedSpeed);
+    moveTime =selectedSpeed;
     setGameOptions({...gameOptions, options: false});
   };
 
   const endGameHandler = () => {
     setGameOptions({...gameOptions, start: false, gameOver: false});
     score = 0;
-    setHeaderScore(0);
     directions.splice(0, directions.length);
   };
 
@@ -217,7 +210,7 @@ const App = () => {
       <div className="container center-xs">
         <Header
           stopGame={() => endGameHandler()}
-          headerScore={headerScore}
+          headerScore={score}
           isGameStarted={gameOptions.start}
           showGameOptions={() => setGameOptions({...gameOptions, options: true})}
         />
