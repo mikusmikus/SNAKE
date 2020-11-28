@@ -1,3 +1,4 @@
+import { spawn } from 'child_process';
 import React, {FC} from 'react';
 import style from './header.module.css';
 
@@ -24,8 +25,9 @@ const Header: FC<Props> = ({headerScore, showGameOptions, isGameStarted, stopGam
               <span className={style.score}>
                 {headerScore}
                 {headerScore === 1 ? ' point' : ' points'}
+                {/* {!(headerScore % 10) && <span>Level Up! speed+5!</span>} */}
               </span>
-            )}
+            )} 
           </h1>
         ) : (
           <h1 className={style.heading}> THIS IS SNAKE GAME !</h1>
