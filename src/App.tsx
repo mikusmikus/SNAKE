@@ -159,11 +159,11 @@ const App = () => {
 
   const addNewFruit = () => {
     if (head.x === food.x && head.y === food.y) {
-      // if (score % 10 === 0) {
-      //   if (moveTime > 50) {
-      //     setMoveTime(moveTime - 5);
-      //   }
-      // }
+      if (score % 10 === 0) {
+        if (moveTime > 50) {
+          setMoveTime(moveTime - 5);
+        }
+      }
       score += 1;
       setHeaderScore(headerScore + 1);
       food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
