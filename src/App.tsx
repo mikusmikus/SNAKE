@@ -159,17 +159,17 @@ const App = () => {
 
   const addNewFruit = () => {
     if (head.x === food.x && head.y === food.y) {
-      if (score % 10 === 0) {
-        if (moveTime > 20) {
-          setMoveTime(moveTime - 10);
-        }
-      }
+      // if (score % 10 === 0) {
+      //   if (moveTime > 50) {
+      //     setMoveTime(moveTime - 5);
+      //   }
+      // }
       score += 1;
       setHeaderScore(headerScore + 1);
       food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
       // fillOneCell(food, 'food');
       fillOneCellOnGrid(food, 'food', grid);
-      showAnimation();
+      // showAnimation();
     } else {
       tail.shift();
     }
@@ -182,17 +182,17 @@ const App = () => {
     });
   };
 
-  const showAnimation = () => {
-    if (score === 0 || score % 10) {
-      return;
-    }
-    setGameOptions({...gameOptions, levelUpAnimation: true});
-    // console.log('animation  On');
-    setTimeout(() => {
-      // console.log('timeout');
-      setGameOptions({...gameOptions, levelUpAnimation: false});
-    }, 4000);
-  };
+  // const showAnimation = () => {
+  //   if (score === 0 || score % 10) {
+  //     return;
+  //   }
+  //   setGameOptions({...gameOptions, levelUpAnimation: true});
+  //   // console.log('animation  On');
+  //   setTimeout(() => {
+  //     // console.log('timeout');
+  //     setGameOptions({...gameOptions, levelUpAnimation: false});
+  //   }, 4000);
+  // };
 
   const handleOptions = (
     event: React.FormEvent<HTMLFormElement>,

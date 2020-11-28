@@ -9,10 +9,10 @@ const gridSize = [
 ];
 
 const speedLevel = [
-  {name: 'slow', time: 300},
-  {name: 'medium', time: 200},
-  {name: 'fast', time: 150},
-  {name: 'extra fast', time: 100},
+  {name: 'slow', time: 350},
+  {name: 'medium', time: 250},
+  {name: 'fast', time: 180},
+  {name: 'extra fast', time: 120},
 ];
 
 type Props = {
