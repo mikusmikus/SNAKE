@@ -21,8 +21,8 @@ let score = 0;
 
 const App = () => {
   const [headerScore, setHeaderScore] = useState(0);
-  const [gridSize, setGridSize] = useState(15);
-  const [moveTime, setMoveTime] = useState(200);
+  const [gridSize, setGridSize] = useState(22);
+  const [moveTime, setMoveTime] = useState(250);
 
   const [refreshGrid, setRefreshGrid] = useState(true);
   const [gameOptions, setGameOptions] = useState({
