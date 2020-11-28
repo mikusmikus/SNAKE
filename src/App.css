@@ -7,7 +7,9 @@
     display: flex;
     width: 100%;
     justify-content: center;
+    
 }
+
 
 .game {
     position: relative;
@@ -46,7 +48,10 @@
     align-items: center;
     justify-content: center;
     border: 1px solid rgb(255, 255, 255);
-    background-color: yellow;
+    /* background-color: rgb(95, 209, 2); */
+    background-image: url('https://image.similarpng.com/very-thumbnail/2020/06/Cartoon-funny-pizza-royalty-free-PNG.png');
+    background-repeat: none;
+    background-size: contain;
     margin: 0;
     z-index: 3;
 }
@@ -80,17 +85,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.heading {
-    text-align: center;
-    position: relative;
-    height: 50px;
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-
 }
 
 .score {

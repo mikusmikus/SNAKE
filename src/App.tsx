@@ -2,46 +2,40 @@ import React, {useState, useEffect} from 'react';
 import * as _ from 'lodash';
 import './App.css';
 import 'flexboxgrid';
-import {drawGrid, Grid, CellColor, Cell, Direction} from './drawGrid';
+import {drawGrid, Grid, Cell, Direction, fillOneCellOnGrid} from './drawGrid';
+import Intro from './components/intro/intro';
+import Header from './components/header/header';
+import Options from './components/options/options';
+import StartAnimation from './components/startAnimation/startAnimation';
 
-const GRID_SIZE = 22;
+// const gridSize = 22;
 let grid: Grid[][];
 
-const fillOneCell = (cell: Cell, color: CellColor) => {
-  grid[cell.y][cell.x].cell = color;
-};
-
-const possibleKeypress: Direction[] = ['ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown'];
+const possibleKeyPress: Direction[] = ['ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown'];
 
 let head: Cell;
 let food: Cell;
 const tail: Cell[] = [];
-
-// type AllColorCells = {
-//   head: Cell;
-//   food: Cell;
-//   tail: Cell[];
-// };
-
-// const allColorCells:AllColorCells = {
-//   head: {x: 2, y: 0},
-//   food: {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)},
-//   tail: [ {x: 0, y: 0},  {x: 1, y: 0}],
-// };
-
 const directions: Direction[] = ['ArrowRight'];
-let keyPress = '';
 let score = 0;
 
 const App = () => {
-  const [moveTime, setMoveTime] = useState(210);
+  const [headerScore, setHeaderScore] = useState(0);
+  const [gridSize, setGridSize] = useState(15);
+  const [moveTime, setMoveTime] = useState(200);
+
   const [refreshGrid, setRefreshGrid] = useState(true);
-  const [animation, setAnimation] = useState(false);
-  const [gameOptions, setGameOptions] = useState({start: false, gameOver: false});
+  const [gameOptions, setGameOptions] = useState({
+    start: false,
+    gameOver: false,
+    levelUpAnimation: false,
+    introAnimation: false,
+    options: false,
+    startAnimation: false,
+  });
 
   useEffect(() => {
     document.body.addEventListener('keydown', (e) => {
-      console.log(directions);
       keyPressHandler(e.key);
     });
   }, []);
@@ -50,9 +44,10 @@ const App = () => {
     if (!gameOptions.start) {
       return;
     }
+    findNextKeypress();
     positionCheck();
     moveTail();
-    moveHead(keyPress);
+    moveHead(directions[0]);
     const interval = setInterval(() => {
       setRefreshGrid(!refreshGrid);
     }, moveTime);
@@ -60,48 +55,47 @@ const App = () => {
     return () => clearInterval(interval);
   }, [refreshGrid]);
 
-  // const findNextKeypress = () => {
-  //   if (directions.length > 1) {
-  //     // eslint-disable-next-line prefer-destructuring
-  //     keyPress = directions[0];
-  //     directions.splice(0, 1);
-  //     return;
-  //   }
-  //   // eslint-disable-next-line prefer-destructuring
-  //   keyPress = directions[0];
-  // };
   const startGame = () => {
-    setGameOptions({...gameOptions, start: true});
-    grid = drawGrid(GRID_SIZE);
-    keyPress = 'ArrowRight';
-    head = {x: 2, y: 0};
-    tail.splice(0, tail.length);
-    tail.push({x: 0, y: 0});
-    tail.push({x: 1, y: 0});
-    food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
-    fillOneCell(head, 'snake');
-    tail.forEach((t) => fillOneCell(t, 'tail'));
-    fillOneCell(food, 'food');
-    setRefreshGrid(!refreshGrid);
+    setGameOptions({...gameOptions, startAnimation: true, start: true});
+    grid = drawGrid(gridSize);
+    setTimeout(() => {
+      setGameOptions({...gameOptions, startAnimation: false, start: true});
+      head = {x: 2, y: 0};
+      tail.splice(0, tail.length);
+      tail.push({x: 0, y: 0});
+      tail.push({x: 1, y: 0});
+      food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
+      fillOneCellOnGrid(head, 'snake', grid);
+      tail.forEach((t) => fillOneCellOnGrid(t, 'tail', grid));
+      fillOneCellOnGrid(food, 'food', grid);
+      directions.push('ArrowRight');
+      setRefreshGrid(!refreshGrid);
+    }, 3000);
+  };
+
+  const findNextKeypress = () => {
+    if (directions.length > 1) {
+      // eslint-disable-next-line prefer-destructuring
+      directions.splice(0, 1);
+    }
   };
 
   const keyPressHandler = (pressedKey: string) => {
-    possibleKeypress.forEach((allowedDirection) => {
+    possibleKeyPress.forEach((allowedDirection) => {
       if (pressedKey === allowedDirection) {
-        if (pressedKey === 'ArrowLeft' && keyPress === 'ArrowRight') {
+        if (pressedKey === 'ArrowLeft' && directions[0] === 'ArrowRight') {
           return;
         }
-        if (pressedKey === 'ArrowRight' && keyPress === 'ArrowLeft') {
+        if (pressedKey === 'ArrowRight' && directions[0] === 'ArrowLeft') {
           return;
         }
-        if (pressedKey === 'ArrowDown' && keyPress === 'ArrowUp') {
+        if (pressedKey === 'ArrowDown' && directions[0] === 'ArrowUp') {
           return;
         }
-        if (pressedKey === 'ArrowUp' && keyPress === 'ArrowDown') {
+        if (pressedKey === 'ArrowUp' && directions[0] === 'ArrowDown') {
           return;
         }
-        // directions.push(pressedKey);
-        keyPress = pressedKey;
+        directions.push(pressedKey);
       }
     });
   };
@@ -109,126 +103,154 @@ const App = () => {
   const positionCheck = () => {
     tail.forEach((t) => {
       if (t.x === head.x && t.y === head.y) {
-        setGameOptions({start: false, gameOver: true});
+        setGameOptions({...gameOptions, start: false, gameOver: true});
       }
     });
   };
 
-
   const moveHead = (dir: string) => {
     switch (dir) {
       case 'ArrowRight':
-        if (head.x === GRID_SIZE - 1) {
+        if (head.x === gridSize - 1) {
           head = {x: 0, y: head.y};
         } else {
           head = {x: head.x + 1, y: head.y};
         }
-        fillOneCell({x: head.x, y: head.y}, 'snake');
+
+        fillOneCellOnGrid({x: head.x, y: head.y}, 'snake', grid);
         break;
 
       case 'ArrowDown':
-        if (head.y === GRID_SIZE - 1) {
+        if (head.y === gridSize - 1) {
           head = {x: head.x, y: 0};
         } else {
           head = {x: head.x, y: head.y + 1};
         }
-        fillOneCell({x: head.x, y: head.y}, 'snake');
+
+        fillOneCellOnGrid({x: head.x, y: head.y}, 'snake', grid);
         break;
       case 'ArrowLeft':
         if (head.x === 0) {
-          head = {x: GRID_SIZE - 1, y: head.y};
+          head = {x: gridSize - 1, y: head.y};
         } else {
           head = {x: head.x - 1, y: head.y};
         }
-        fillOneCell({x: head.x, y: head.y}, 'snake');
+        fillOneCellOnGrid({x: head.x, y: head.y}, 'snake', grid);
         break;
       case 'ArrowUp':
         if (head.y === 0) {
-          head = {x: head.x, y: GRID_SIZE - 1};
+          head = {x: head.x, y: gridSize - 1};
         } else {
           head = {x: head.x, y: head.y - 1};
         }
-        fillOneCell({x: head.x, y: head.y}, 'snake');
+        fillOneCellOnGrid({x: head.x, y: head.y}, 'snake', grid);
         break;
     }
   };
 
   const moveTail = () => {
     tail.push({x: head.x, y: head.y});
-    fillOneCell(tail[0], 'empty');
+    // fillOneCell(tail[0], 'empty');
+    fillOneCellOnGrid(tail[0], 'empty', grid);
     addNewFruit();
-    tail.forEach((t) => fillOneCell(t, 'tail'));
+    // tail.forEach((t) => fillOneCell(t, 'tail'));
+    tail.forEach((t) => fillOneCellOnGrid(t, 'tail', grid));
   };
 
   const addNewFruit = () => {
     if (head.x === food.x && head.y === food.y) {
-      if (score % 5 === 0) {
+      if (score % 10 === 0) {
         if (moveTime > 20) {
           setMoveTime(moveTime - 10);
         }
       }
       score += 1;
-      food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
-      fillOneCell(food, 'food');
+      setHeaderScore(headerScore + 1);
+      food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
+      // fillOneCell(food, 'food');
+      fillOneCellOnGrid(food, 'food', grid);
       showAnimation();
     } else {
       tail.shift();
     }
     tail.forEach((t) => {
       if (t.x === food.x && t.y === food.y) {
-        food = {x: _.random(GRID_SIZE - 1), y: _.random(GRID_SIZE - 1)};
-        fillOneCell(food, 'food');
+        food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
+        // fillOneCell(food, 'food');
+        fillOneCellOnGrid(food, 'food', grid);
       }
     });
   };
 
   const showAnimation = () => {
-    if (score === 0 || score % 5) {
+    if (score === 0 || score % 10) {
       return;
     }
-    setAnimation(true);
-    console.log('animation  On'); 
+    setGameOptions({...gameOptions, levelUpAnimation: true});
+    // console.log('animation  On');
     setTimeout(() => {
-      console.log('timeout');
-      setAnimation(false);
+      // console.log('timeout');
+      setGameOptions({...gameOptions, levelUpAnimation: false});
     }, 4000);
+  };
+
+  const handleOptions = (
+    event: React.FormEvent<HTMLFormElement>,
+    selectedGrid: number,
+    selectedSpeed: number
+  ) => {
+    event.preventDefault();
+    setGridSize(selectedGrid);
+    setMoveTime(selectedSpeed);
+    setGameOptions({...gameOptions, options: false});
+  };
+
+  const endGameHandler = () => {
+    setGameOptions({...gameOptions, start: false, gameOver: false});
+    score = 0;
+    setHeaderScore(0);
+    directions.splice(0, directions.length);
   };
 
   return (
     <div>
       <div className="container center-xs">
-        <h1 className="heading">
-          {' '}
-          {score > 0 && (
-            <span className="score">
-              {score}
-              {score === 1 ? ' point' : ' points'}
-            </span>
-          )}
-        </h1>
-        <div className="row center-xs game-wrapper">
+        <Header
+          stopGame={() => endGameHandler()}
+          headerScore={headerScore}
+          isGameStarted={gameOptions.start}
+          showGameOptions={() => setGameOptions({...gameOptions, options: true})}
+        />
+        <div className="row center-xs">
           <div className="col-xs-12">
             <div className="game">
+              {/* {introAnimation  && <IntroAnimation>} */}
+              {gameOptions.options && (
+                <Options
+                  gameMoveTime={moveTime}
+                  gameGridSize={gridSize}
+                  handleOptions={handleOptions}
+                  cancelOption={() => setGameOptions({...gameOptions, options: false})}
+                />
+              )}
               {!gameOptions.start ? (
-                <button type="button" className="button" onClick={() => startGame()}>
-                  {' '}
-                  start
-                </button>
+                <Intro startGame={() => startGame()} />
               ) : (
                 <>
-                  {animation && (
+                  {gameOptions.levelUpAnimation && (
                     <div className="animation">
                       <h1>LEVEL UP</h1>
                       <h1>SPEED +10</h1>
                     </div>
                   )}
+                  {gameOptions.startAnimation && <StartAnimation />}
                   {grid &&
                     grid.map((element) =>
                       element.map((el) => (
                         <span
                           className={el.cell}
                           key={el.id}
-                          style={{width: `${800 / GRID_SIZE}px`, height: `${800 / GRID_SIZE}px`}}
+                          style={{width: `${800 / gridSize}px`, height: `${800 / gridSize}px`}}
                         >
                           {/* {el.id} */}
                         </span>
@@ -240,10 +262,7 @@ const App = () => {
                 <button
                   type="button"
                   className="button button--gameOver"
-                  onClick={() => {
-                    setGameOptions({start: false, gameOver: false});
-                    score = 0;
-                  }}
+                  onClick={() => endGameHandler()}
                 >
                   {' '}
                   <span className="score"> Congratz, you got {score} points! </span>

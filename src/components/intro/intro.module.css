@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap');
+  *{
+    font-family: 'Goldman', cursive;
+  }
+  .intro {
+
+}
+.button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 200px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: rgb(230, 230, 230);
+}
+
+.line {
+    /* display: flex; */
+    position: absolute;
+    top: 500px;
+    margin-left: 30px;
+    width: 120px;
+    height: 60px;
+    background-color: rgb(255, 43, 149);
+    border-right: 60px solid rgb(255, 0, 0);
+    animation: snake 3s linear infinite;
+}
+.ayes{
+    position: absolute;
+    right: -55px;
+    font-size: 50px;
+    top: -3px
+}
+.pizza{
+    position: absolute;
+    top: 500px;
+    right: 50px;
+    text-align: end;
+    height: 60px;
+    width: 60px;
+    color: yellow;
+    background-color: transparent;
+   
+}
+
+@keyframes snake {
+    0% {
+        width: 60px;
+    } 9.99% {
+        width: 60px;
+    }
+    10% {
+        width: 120px;
+    }
+    19.99% {
+        width: 120px;
+    }
+    20% {
+        width: 180px;
+    }
+    29.99% {
+        width: 180px;
+    }
+    30% {
+        width: 240px;
+    }
+    39.99% {
+        width: 240px;
+    }
+    40% {
+        width: 300px;
+    }
+    49.99% {
+        width: 300px;
+    }
+    50% {
+        width: 360px;
+    }
+    59.99% {
+        width: 360px;
+    }
+    60% {
+        width: 420px;
+    }
+    69.99% {
+        width: 420px;
+    }
+    70% {
+        width: 480px;
+    }
+    79.99% {
+        width: 480px;
+    }
+    80% {
+        width: 540px;
+    }
+    89.99% {
+        width: 540px;
+    }
+    90% {
+        width: 600px;
+    }
+    99.99% {
+        width: 600px;
+    }
+    100% {
+        width: 660px;
+    }
+ 
+}

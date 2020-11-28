@@ -17,3 +17,11 @@ export const drawGrid = (size: number): Grid[][] => {
   }
   return gridArr2d;
 };
+
+export const fillOneCellOnGrid = (cell: Cell, color: CellColor, grid: Grid[][]) => {
+  const copyGrid = [...grid];
+  copyGrid[cell.y][cell.x].cell = color;
+  return copyGrid;
+};
+
+
