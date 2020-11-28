@@ -13,7 +13,7 @@ const Header: FC<Props> = ({headerScore, showGameOptions, isGameStarted, stopGam
     <div className={style.buttonWrapper}>
       <div className={style.header}>
         <img
-          src="https://lh3.googleusercontent.com/proxy/Qw4bsia7Cf5DkfBLHZ38XkzFYPDfUFP2gIptNSpjF9qmkqpEnMytMJSMe1VZkATBixoB02vV8pIwhyCHyBVxSVl-SJh6t9uP1v2wvaCBn18NPLU2bCRfwL8ff1Fy4wDi4yH8IbSTbFB1UeTsxnISaxIFQqH9IhiXaOU"
+          src="https://www.iconarchive.com/download/i24292/martin-berube/animal/snake.ico"
           alt="image1"
           className={style.image}
         />
