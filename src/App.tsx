@@ -6,19 +6,13 @@ import {v4 as uuidv4} from 'uuid';
 import {drawGrid, Grid, Cell, Direction, fillOneCellOnGrid} from './drawGrid';
 import Intro from './components/intro/intro';
 import Header from './components/header/header';
-import Options from './components/options/options';
+import Options, {possibleGridSize, possibleSpeedLevel} from './components/options/options';
 import StartAnimation from './components/startAnimation/startAnimation';
 import Results from './components/results/results';
 import GameOver from './components/gameOver/gameOver';
 
-// const gridSize = 22;
 let grid: Grid[][];
-
 const possibleKeyPress: Direction[] = ['ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown'];
-const results = [
-  {id: uuidv4(), name: 'john', score: 99, speedLevel: 'fast', gridSize: 'large'},
-  {id: uuidv4(), name: 'peter', score: 99, speedLevel: 'fast', gridSize: 'large'},
-];
 
 export type Result = {
   id: string;
@@ -33,11 +27,13 @@ let food: Cell;
 const tail: Cell[] = [];
 const directions: Direction[] = ['ArrowRight'];
 let score = 0;
-let moveTime = 250;
+let time = 0;
 
 const App = () => {
-  const [gridSize, setGridSize] = useState(22);
+  const [gridSize, setGridSize] = useState(possibleGridSize[1].size);
+  const [moveTime, setMoveTime] = useState(possibleSpeedLevel[2].time);
   const [resultName, setResultName] = useState('');
+  const [results, setResults] = useState<Result[]>([]);
 
   const [refreshGrid, setRefreshGrid] = useState(true);
   const [gameOptions, setGameOptions] = useState({
@@ -51,6 +47,8 @@ const App = () => {
   });
 
   useEffect(() => {
+    const storageSnakeResults = localStorage.getItem('snakeResults');
+    storageSnakeResults && setResults(JSON.parse(storageSnakeResults));
     document.body.addEventListener('keydown', (e) => {
       keyPressHandler(e.key);
     });
@@ -66,7 +64,7 @@ const App = () => {
     moveHead(directions[0]);
     const interval = setInterval(() => {
       setRefreshGrid(!refreshGrid);
-    }, moveTime);
+    }, time);
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval);
   }, [refreshGrid]);
@@ -74,6 +72,7 @@ const App = () => {
   const startGame = () => {
     setGameOptions({...gameOptions, startAnimation: true, start: true});
     grid = drawGrid(gridSize);
+    time = moveTime;
     setTimeout(() => {
       setGameOptions({...gameOptions, startAnimation: false, start: true});
       head = {x: 2, y: 0};
@@ -173,14 +172,13 @@ const App = () => {
   const addNewFruit = () => {
     if (head.x === food.x && head.y === food.y) {
       if (score % 10 === 0) {
-        if (moveTime > 50) {
-          moveTime -= 5;
+        if (time > 50) {
+          time -= 5;
         }
       }
       score += 1;
       food = {x: _.random(gridSize - 1), y: _.random(gridSize - 1)};
       fillOneCellOnGrid(food, 'food', grid);
-      // showAnimation();
     } else {
       tail.shift();
     }
@@ -211,7 +209,8 @@ const App = () => {
   ) => {
     event.preventDefault();
     setGridSize(selectedGrid);
-    moveTime = selectedSpeed;
+    setMoveTime(selectedSpeed);
+    // moveTime = selectedSpeed;
     setGameOptions({...gameOptions, options: false});
   };
 
@@ -222,22 +221,32 @@ const App = () => {
   };
 
   const handleResults = () => {
-
-    const newObj: Result = {
+    const copyResults: Result[] = [...results];
+    const speedLVL = possibleSpeedLevel.find((speed) => speed.time === moveTime);
+    const selectedGridSize = possibleGridSize.find((gridGrid) => gridGrid.size === gridSize);
+    const resultObj: Result = {
       id: uuidv4(),
       name: resultName,
       score,
-      speedLevel: 'fast',
-      gridSize: 'fast',
+      // @ts-ignore
+      speedLevel: speedLVL.name,
+      // @ts-ignore
+      gridSize: selectedGridSize.name,
     };
-    results.push(newObj);
+    if (!resultName) {
+      alert('enter your name to save result');
+    }
+    copyResults.push(resultObj);
+    const sortedResults = copyResults.sort((a, b) => {
+      return b.score - a.score;
+    });
+    localStorage.setItem('snakeResults', JSON.stringify(sortedResults));
+    setResults(sortedResults);
     setResultName('');
     setGameOptions({...gameOptions, gameOver: false, start: false});
     score = 0;
     directions.splice(0, directions.length);
-
   };
-
 
   return (
     <div>
@@ -276,18 +285,18 @@ const App = () => {
                     </div>
                   )}
                   {gameOptions.startAnimation && <StartAnimation />}
-                  {grid &&
-                    grid.map((element) =>
-                      element.map((el) => (
-                        <span
-                          className={el.cell}
-                          key={el.id}
-                          style={{width: `${800 / gridSize}px`, height: `${800 / gridSize}px`}}
-                        >
-                          {/* {el.id} */}
-                        </span>
-                      ))
-                    )}
+                  <div className="grid-wrapper">
+                    {grid &&
+                      grid.map((element) =>
+                        element.map((el) => (
+                          <span
+                            className={el.cell}
+                            key={el.id}
+                            style={{width: `${800 / gridSize}px`, height: `${800 / gridSize}px`}}
+                          />
+                        ))
+                      )}
+                  </div>
                 </>
               )}
               {gameOptions.gameOver && (

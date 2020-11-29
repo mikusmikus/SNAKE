@@ -1,28 +1,42 @@
-import React, {useState, FC} from 'react';
+import React, {FC, useRef, useEffect} from 'react';
 import style from './gameOver.module.css';
 
 type Props = {
   score: number;
-  resultName:string;
+  resultName: string;
   handleResults: () => void;
   endGameHandler: () => void;
-  inputNameHandler:(e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputNameHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const GameOver: FC<Props> = ({score, endGameHandler, handleResults, resultName, inputNameHandler}) => {
+const GameOver: FC<Props> = ({
+  score,
+  endGameHandler,
+  handleResults,
+  resultName,
+  inputNameHandler,
+}) => {
+  const inputEl = useRef(null);
+
+  useEffect(() => {
+    // @ts-ignore
+    inputEl.current.focus();
+  }, []);
   return (
     <div className={style.gameOver}>
-      <span className={style.score}> Congratz, you got {score} points! </span>
-      <label htmlFor="inputName" className={style.label}>
-        <p>enter your name to save result!</p>
+      <h1 className={style.heading}> Congratz, you got {score} points! </h1>
+      <label htmlFor="inputName">
+        <p className={style.label}>enter your name to save result!</p>
         <div className={style.inputWrapper}>
           <input
+            ref={inputEl}
+            className={style.input}
             id="inputValue"
             type="text"
             value={resultName}
             onChange={inputNameHandler}
           />
-          <button onClick={() => handleResults()} type="button">
+          <button onClick={() => handleResults()} type="button" className={style.saveButton}>
             save
           </button>
         </div>

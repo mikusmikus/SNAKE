@@ -75,3 +75,19 @@
 .button:hover {
     opacity: 0.8;
 }
+
+.button2{
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* padding: 10px; */
+    background-color: rgb(133, 200, 139);
+    border: none;
+    outline:none;
+    font-size:32px;
+    cursor:pointer;
+    transition: all 0.2s;
+}
+.button2:hover {
+    opacity: 0.8;
+}

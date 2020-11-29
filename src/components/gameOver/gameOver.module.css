@@ -1,5 +1,4 @@
-
-.gameOver{
+.gameOver {
     position: absolute;
     background-color: rgb(190, 190, 190);
     width: 100%;
@@ -9,8 +8,7 @@
     padding: 50px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-between;
 }
 
 .button {
@@ -31,16 +29,51 @@
     justify-content: center;
 }
 
-.score {
+.heading {
     color: rgb(5, 119, 3);
-    font-size: 40px;
-
+    font-size: 70px;
 }
-.label{
+
+.label {
     font-size: 30px;
-    height: 100px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    margin-bottom: 10px;
+}
+
+.inputWrapper {
+    position: relative;
+    margin: 0 auto;
+    width: 70%;
+    height: 50px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgb(4, 97, 2);
+}
+
+.input {
+    height: 100%;
+    width: 100%;
+    padding: 5px 10px;
+    font-size: 25px;
+    /* background-color: rgb(133, 200, 139); */
+    border-radius: 6px;
+    border: none;
+    outline: none
+}
+
+.saveButton {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 30px;
+    border: none;
+    border-left: 1px solid rgb(4, 97, 2);
+    background-color: rgb(133, 200, 139);
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.saveButton:hover{
+    opacity: 0.8;
 }
