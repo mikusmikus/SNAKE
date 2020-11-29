@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/SNAKE/static/css/main.e70e6399.chunk.css",
-    "main.js": "/SNAKE/static/js/main.303d04dc.chunk.js",
-    "main.js.map": "/SNAKE/static/js/main.303d04dc.chunk.js.map",
+    "main.js": "/SNAKE/static/js/main.21e379c3.chunk.js",
+    "main.js.map": "/SNAKE/static/js/main.21e379c3.chunk.js.map",
     "runtime-main.js": "/SNAKE/static/js/runtime-main.1cac001c.js",
     "runtime-main.js.map": "/SNAKE/static/js/runtime-main.1cac001c.js.map",
     "static/css/2.e985627f.chunk.css": "/SNAKE/static/css/2.e985627f.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.e985627f.chunk.css",
     "static/js/2.e5313d4a.chunk.js",
     "static/css/main.e70e6399.chunk.css",
-    "static/js/main.303d04dc.chunk.js"
+    "static/js/main.21e379c3.chunk.js"
   ]
 }
