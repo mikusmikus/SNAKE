@@ -28,6 +28,7 @@ const tail: Cell[] = [];
 const directions: Direction[] = ['ArrowRight'];
 let score = 0;
 let time = 0;
+let myTimeOut:NodeJS.Timeout;
 
 const App = () => {
   const [gridSize, setGridSize] = useState(possibleGridSize[1].size);
@@ -73,7 +74,7 @@ const App = () => {
     setGameOptions({...gameOptions, startAnimation: true, start: true});
     grid = drawGrid(gridSize);
     time = moveTime;
-    setTimeout(() => {
+    myTimeOut = setTimeout(() => {
       setGameOptions({...gameOptions, startAnimation: false, start: true});
       head = {x: 2, y: 0};
       tail.splice(0, tail.length);
@@ -215,6 +216,7 @@ const App = () => {
   };
 
   const endGameHandler = () => {
+    clearTimeout(myTimeOut);
     setGameOptions({...gameOptions, start: false, gameOver: false});
     score = 0;
     directions.splice(0, directions.length);
