@@ -5,8 +5,8 @@ const StartAnimation = () => {
   return (
     <div className={style.animationWrapper}>
       <span className={style.animation}>
-        <span style={{color: 'pink'}}>Let's</span>
-        <span style={{color: 'red'}}>GO!!!</span>
+        <span className={style.firstWord}>Let's</span>
+        <span className={style.secondWord}>GO!!!</span>
       </span>
     </div>
   );

@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+
 import React, {FC} from 'react';
 import style from './header.module.css';
 
@@ -6,10 +6,11 @@ type Props = {
   isGameStarted: boolean;
   headerScore: number;
   showGameOptions: () => void;
+  showGameResults: () => void;
   stopGame: () => void;
 };
 
-const Header: FC<Props> = ({headerScore, showGameOptions, isGameStarted, stopGame}) => {
+const Header: FC<Props> = ({headerScore, showGameOptions, showGameResults, isGameStarted, stopGame}) => {
   return (
     <div className={style.buttonWrapper}>
       <div className={style.header}>
@@ -42,7 +43,7 @@ const Header: FC<Props> = ({headerScore, showGameOptions, isGameStarted, stopGam
             </>
           ) : (
             <>
-              {/* <button type="button">results</button> */}
+              <button type="button" className={style.button} onClick={showGameResults}>results</button>
               <button type="button" onClick={showGameOptions} className={style.button}>
                 options
               </button>

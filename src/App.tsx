@@ -2,16 +2,30 @@ import React, {useState, useEffect} from 'react';
 import * as _ from 'lodash';
 import './App.css';
 import 'flexboxgrid';
+import {v4 as uuidv4} from 'uuid';
 import {drawGrid, Grid, Cell, Direction, fillOneCellOnGrid} from './drawGrid';
 import Intro from './components/intro/intro';
 import Header from './components/header/header';
 import Options from './components/options/options';
 import StartAnimation from './components/startAnimation/startAnimation';
+import Results from './components/results/results';
 
 // const gridSize = 22;
 let grid: Grid[][];
 
 const possibleKeyPress: Direction[] = ['ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown'];
+const results = [
+  {id: uuidv4(), name: 'john', score: 99, speedLevel: 'fast', gridSize: 'large'},
+  {id: uuidv4(), name: 'peter', score: 99, speedLevel: 'fast', gridSize: 'large'},
+];
+
+export type Result = {
+  id: string;
+  name: string;
+  score: number;
+  speedLevel: string;
+  gridSize: string;
+};
 
 let head: Cell;
 let food: Cell;
@@ -31,6 +45,7 @@ const App = () => {
     levelUpAnimation: false,
     introAnimation: false,
     options: false,
+    results: false,
     startAnimation: false,
   });
 
@@ -195,7 +210,7 @@ const App = () => {
   ) => {
     event.preventDefault();
     setGridSize(selectedGrid);
-    moveTime =selectedSpeed;
+    moveTime = selectedSpeed;
     setGameOptions({...gameOptions, options: false});
   };
 
@@ -213,19 +228,24 @@ const App = () => {
           headerScore={score}
           isGameStarted={gameOptions.start}
           showGameOptions={() => setGameOptions({...gameOptions, options: true})}
+          showGameResults={() => setGameOptions({...gameOptions, results: true})}
         />
-        <div className="row center-xs">
+        <div className="row">
           <div className="col-xs-12">
             <div className="game">
-              {/* {introAnimation  && <IntroAnimation>} */}
-              {gameOptions.options && (
-                <Options
-                  gameMoveTime={moveTime}
-                  gameGridSize={gridSize}
-                  handleOptions={handleOptions}
-                  cancelOption={() => setGameOptions({...gameOptions, options: false})}
-                />
-              )}
+              <Options
+                activeOptions={gameOptions.options}
+                gameMoveTime={moveTime}
+                gameGridSize={gridSize}
+                handleOptions={handleOptions}
+                cancelOption={() => setGameOptions({...gameOptions, options: false})}
+              />
+              <Results
+                activeResults={gameOptions.results}
+                cancelResults={() => setGameOptions({...gameOptions, results: false})}
+                results={results}
+              />
+
               {!gameOptions.start ? (
                 <Intro startGame={() => startGame()} />
               ) : (

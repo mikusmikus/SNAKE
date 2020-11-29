@@ -16,8 +16,9 @@ const speedLevel = [
 ];
 
 type Props = {
-  handleOptions: (event: React.FormEvent<HTMLFormElement>, a: number, b: number) => void;
+  handleOptions: (event: React.FormEvent<HTMLFormElement>, selectedGrid: number, selectedSpeed: number) => void;
   cancelOption: () => void;
+  activeOptions: boolean;
   gameGridSize: number;
   gameMoveTime: number;
 };
@@ -31,12 +32,12 @@ type GridSize = {
   name: string;
   size: number;
 };
-const Options: FC<Props> = ({handleOptions, cancelOption, gameGridSize, gameMoveTime}) => {
+const Options: FC<Props> = ({handleOptions, cancelOption, gameGridSize, gameMoveTime, activeOptions}) => {
   const [selectedSpeedLevel, setSelectedSpeedLevel] = useState(gameMoveTime);
   const [selectedGridSize, setSelectedGrizSize] = useState(gameGridSize);
-
+  
   return (
-    <div className={style.OptionsWrapper}>
+    <div className={`${style.OptionsWrapper} ${activeOptions && style.active}`}>
       <form
         className={style.options}
         action="submit"
@@ -59,10 +60,11 @@ const Options: FC<Props> = ({handleOptions, cancelOption, gameGridSize, gameMove
             ))}
           </select>
         </label>
-        <label htmlFor="gridSize" className={style.label}>
+        <label htmlFor="speedLevel" className={style.label}>
           Select game speed
           <select
             className={style.dropDownList}
+            id="speedLevel"
             name="speedLevel"
             value={selectedSpeedLevel}
             onChange={(e) => setSelectedSpeedLevel(parseInt(e.target.value, 10))}
