@@ -21,6 +21,9 @@
     margin: 0 auto;
     margin-top: 100px;
     background-color: rgb(117, 117, 117);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .resultList{

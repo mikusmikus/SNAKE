@@ -9,6 +9,7 @@ import Header from './components/header/header';
 import Options from './components/options/options';
 import StartAnimation from './components/startAnimation/startAnimation';
 import Results from './components/results/results';
+import GameOver from './components/gameOver/gameOver';
 
 // const gridSize = 22;
 let grid: Grid[][];
@@ -36,7 +37,7 @@ let moveTime = 250;
 
 const App = () => {
   const [gridSize, setGridSize] = useState(22);
-  // const [moveTime, setMoveTime] = useState(250);
+  const [resultName, setResultName] = useState('');
 
   const [refreshGrid, setRefreshGrid] = useState(true);
   const [gameOptions, setGameOptions] = useState({
@@ -220,6 +221,24 @@ const App = () => {
     directions.splice(0, directions.length);
   };
 
+  const handleResults = () => {
+
+    const newObj: Result = {
+      id: uuidv4(),
+      name: resultName,
+      score,
+      speedLevel: 'fast',
+      gridSize: 'fast',
+    };
+    results.push(newObj);
+    setResultName('');
+    setGameOptions({...gameOptions, gameOver: false, start: false});
+    score = 0;
+    directions.splice(0, directions.length);
+
+  };
+
+
   return (
     <div>
       <div className="container center-xs">
@@ -272,15 +291,13 @@ const App = () => {
                 </>
               )}
               {gameOptions.gameOver && (
-                <button
-                  type="button"
-                  className="button button--gameOver"
-                  onClick={() => endGameHandler()}
-                >
-                  {' '}
-                  <span className="score"> Congratz, you got {score} points! </span>
-                  Play Again!
-                </button>
+                <GameOver
+                  endGameHandler={() => endGameHandler()}
+                  score={score}
+                  resultName={resultName}
+                  inputNameHandler={(e) => setResultName(e.target.value)}
+                  handleResults={handleResults}
+                />
               )}
             </div>
           </div>
