@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/SNAKE/static/css/main.bf3d8680.chunk.css",
-    "main.js": "/SNAKE/static/js/main.d5f491a4.chunk.js",
-    "main.js.map": "/SNAKE/static/js/main.d5f491a4.chunk.js.map",
+    "main.css": "/SNAKE/static/css/main.e70e6399.chunk.css",
+    "main.js": "/SNAKE/static/js/main.303d04dc.chunk.js",
+    "main.js.map": "/SNAKE/static/js/main.303d04dc.chunk.js.map",
     "runtime-main.js": "/SNAKE/static/js/runtime-main.1cac001c.js",
     "runtime-main.js.map": "/SNAKE/static/js/runtime-main.1cac001c.js.map",
     "static/css/2.e985627f.chunk.css": "/SNAKE/static/css/2.e985627f.chunk.css",
-    "static/js/2.c30f62a1.chunk.js": "/SNAKE/static/js/2.c30f62a1.chunk.js",
-    "static/js/2.c30f62a1.chunk.js.map": "/SNAKE/static/js/2.c30f62a1.chunk.js.map",
+    "static/js/2.e5313d4a.chunk.js": "/SNAKE/static/js/2.e5313d4a.chunk.js",
+    "static/js/2.e5313d4a.chunk.js.map": "/SNAKE/static/js/2.e5313d4a.chunk.js.map",
     "static/js/3.429028e9.chunk.js": "/SNAKE/static/js/3.429028e9.chunk.js",
     "static/js/3.429028e9.chunk.js.map": "/SNAKE/static/js/3.429028e9.chunk.js.map",
     "index.html": "/SNAKE/index.html",
     "static/css/2.e985627f.chunk.css.map": "/SNAKE/static/css/2.e985627f.chunk.css.map",
-    "static/css/main.bf3d8680.chunk.css.map": "/SNAKE/static/css/main.bf3d8680.chunk.css.map",
-    "static/js/2.c30f62a1.chunk.js.LICENSE.txt": "/SNAKE/static/js/2.c30f62a1.chunk.js.LICENSE.txt"
+    "static/css/main.e70e6399.chunk.css.map": "/SNAKE/static/css/main.e70e6399.chunk.css.map",
+    "static/js/2.e5313d4a.chunk.js.LICENSE.txt": "/SNAKE/static/js/2.e5313d4a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1cac001c.js",
     "static/css/2.e985627f.chunk.css",
-    "static/js/2.c30f62a1.chunk.js",
-    "static/css/main.bf3d8680.chunk.css",
-    "static/js/main.d5f491a4.chunk.js"
+    "static/js/2.e5313d4a.chunk.js",
+    "static/css/main.e70e6399.chunk.css",
+    "static/js/main.303d04dc.chunk.js"
   ]
 }
